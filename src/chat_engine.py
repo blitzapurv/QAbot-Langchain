@@ -27,7 +27,6 @@ from src.prompt_templates import (
     DEFAULT_CHAT_HISTORY_PROMPT,
 )
 
-
 class ChatBotModel:
     def __init__(self, logger: logging.Logger, model_name=None, embedding_model_name=None):
         self.logger = logger
@@ -38,18 +37,18 @@ class ChatBotModel:
             model = AutoModelForCausalLM.from_pretrained(
                 model_name, torch_dtype=torch.float16, trust_remote_code=True, device_map="auto"
             )
-            # generation_config = GenerationConfig.from_pretrained(model_name)
-            # generation_config.max_new_tokens = 1024
-            # generation_config.temperature = 0.0001
-            # generation_config.top_p = 0.95
-            # generation_config.do_sample = True
-            # generation_config.repetition_penalty = 1.15
+            generation_config = GenerationConfig.from_pretrained(model_name)
+            generation_config.max_new_tokens = 1024
+            generation_config.temperature = 0.0001
+            generation_config.top_p = 0.95
+            generation_config.do_sample = True
+            generation_config.repetition_penalty = 1.15
             
             text_pipeline = pipeline(
                 "text-generation",
                 model=model,
                 tokenizer=tokenizer,
-                # generation_config=generation_config,
+                generation_config=generation_config,
             )
             self.llm = HuggingFacePipeline(pipeline=text_pipeline, model_kwargs={"temperature": 0.1})
 

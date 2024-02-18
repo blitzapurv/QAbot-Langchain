@@ -7,7 +7,7 @@ from src.chat_engine import ChatBotModel
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-chat_bot = ChatBotModel(logger, model_name="databricks/dolly-v2-3b", embedding_model_name="all-MiniLM-L6-v2")
+chat_bot = ChatBotModel(logger, model_name="TheBloke/Llama-2-7b-Chat-GPTQ", embedding_model_name="all-MiniLM-L6-v2")
 qa = chat_bot.create_qa_instance(file_path="./sample_pdf.pdf")
 
 def run():
