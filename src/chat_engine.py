@@ -34,24 +34,22 @@ class ChatBotModel:
         if 'gpt-' in model_name:
             self.llm = OpenAI(model_name=model_name, temperature=0.1, max_tokens=-1)
         else:
-            model_name == "TheBloke/Llama-2-7b-Chat-GPTQ"
-            print(model_name)
             tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
             model = AutoModelForCausalLM.from_pretrained(
                 model_name, torch_dtype=torch.float16, trust_remote_code=True, device_map="auto"
             )
-            generation_config = GenerationConfig.from_pretrained(model_name)
-            generation_config.max_new_tokens = 1024
-            generation_config.temperature = 0.0001
-            generation_config.top_p = 0.95
-            generation_config.do_sample = True
-            generation_config.repetition_penalty = 1.15
+            # generation_config = GenerationConfig.from_pretrained(model_name)
+            # generation_config.max_new_tokens = 1024
+            # generation_config.temperature = 0.0001
+            # generation_config.top_p = 0.95
+            # generation_config.do_sample = True
+            # generation_config.repetition_penalty = 1.15
             
             text_pipeline = pipeline(
                 "text-generation",
                 model=model,
                 tokenizer=tokenizer,
-                generation_config=generation_config,
+                # generation_config=generation_config,
             )
             self.llm = HuggingFacePipeline(pipeline=text_pipeline, model_kwargs={"temperature": 0.1})
 
@@ -60,7 +58,6 @@ class ChatBotModel:
                 model="text-embedding-ada-002",
             )
         else:
-            print(embedding_model_name)
             self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
